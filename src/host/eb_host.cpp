@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <objbase.h>
 #pragma comment(lib,"ole32.lib")
+#pragma comment(lib,"oleaut32.lib")
 #pragma comment(lib,"user32.lib")
 
 struct G { unsigned long a; unsigned short b,c; unsigned char d[8]; };
