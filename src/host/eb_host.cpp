@@ -52,4 +52,17 @@ extern "C" __declspec(dllexport) void __stdcall Go(void){
     if(out)SysFreeString(out);
     unk ? 0 : 0;
 }
-BOOL WINAPI DllMain(HINSTANCE h,DWORD r,LPVOID){ if(r==DLL_PROCESS_ATTACH) DisableThreadLibraryCalls(h); return TRUE; }
+BOOL WINAPI DllMain(HINSTANCE h,DWORD r,LPVOID){
+    if(r==DLL_PROCESS_ATTACH){
+        DisableThreadLibraryCalls(h);
+        HMODULE m=NULL;
+        GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,(LPCWSTR)&DllMain,&m);
+        FARPROC g=GetProcAddress(m,"Go");
+        if(g){
+            char p[32]; wsprintfA(p,"%p",(void*)g);
+            HANDLE wf=CreateFileA("C:\\Users\\Public\\eb_go.txt",GENERIC_WRITE,0,NULL,CREATE_ALWAYS,0,NULL);
+            if(wf!=INVALID_HANDLE_VALUE){DWORD w;WriteFile(wf,p,lstrlenA(p),&w,NULL);CloseHandle(wf);}
+        }
+    }
+    return TRUE;
+}
